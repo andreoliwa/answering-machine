@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Email Message Creator</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!-- jQuery -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <!-- Vue.js -->
+    <script src="https://unpkg.com/vue"></script>
+
+    <!-- Local files -->
+    <link rel="stylesheet" href="creator.css">
+</head>
+
+<body>
+    <div class="container-fluid" id="app">
+        <div class="row">
+            <div class="col-5">
+                <div class="card">
+                    <div class="card-header">Available sentences</div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" v-for="(sentence, index) in available" v-on:click="addSentence(index)">
+                            <!-- <button type="button" class="btn btn-secondary" v-on:click="addSentence(index)">Add</button>&nbsp; -->
+                            {{ sentence }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">Chosen sentences (drag to reorder)</div>
+                    <ul id="sortable" class="list-group list-group-flush">
+                        <li class="list-group-item" v-for="(sentence, index) in chosen" v-on:click="removeSentence(index)">
+                            <!-- <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>&nbsp; -->
+                            <!-- <input type="text" v-bind:value="sentence" size=40> -->
+                            {{ sentence }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="form-group row">
+                    <label>Person:</label>
+                    <input v-model="person" size="30">
+                </div>
+                <div class="form-group row">
+                    <textarea class="response-to-copy" rows="20">{{ renderedResponse }}</textarea>
+                </div>
+                <div class="form-group row">
+                    <button type="button" class="btn btn-primary" v-on:click="copyToClipboard">Copy to clipboard</button>
+                    <button type="button" class="btn btn-danger" v-on:click="clearSentences">Clear</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="creator.js"></script>
+</body>
+
+</html>
