@@ -1,4 +1,4 @@
-var possibleSentences = `
+var defaultSentences = `
 Hi, {person},
 Hello, {person},
 Dear {person},
@@ -11,11 +11,13 @@ Have a nice weekend and best regards.
 Have a nice day and best regards.
 `;
 
+var parseSentences = (text) => text.split('\n').map((e) => e.trim()).filter((e) => e != '');
+
 var app = new Vue({
     el: '#app',
     data: {
         person: '',
-        available: possibleSentences.split('\n').map((e) => e.trim()).filter((e) => e != ''),
+        available: parseSentences(defaultSentences),
         chosen: []
     },
     methods: {
@@ -39,6 +41,18 @@ var app = new Vue({
             } catch (err) {
                 console.log('Oops, unable to copy');
             }
+        },
+        uploadTextFile: function (e) {
+            var files = e.target.files;
+            if (!files[0]) {
+                return;
+            }
+            var reader = new FileReader();
+            reader.onload = (e) => {
+                this.available = parseSentences(e.target.result);
+                this.clearSentences();
+            };
+            reader.readAsText(files[0]);
         }
     },
     computed: {
