@@ -57,7 +57,7 @@ var app = new Vue({
     },
     computed: {
         renderedResponse: function () {
-            return this.chosen.join('\n').replace('{person}', this.person);
+            return this.chosen.join('\n').replace(/\{person\}/g, this.person);
         }
     }
 });
