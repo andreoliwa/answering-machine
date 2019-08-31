@@ -33,8 +33,8 @@ class UploadSentenceFile extends React.Component {
     }
     return (
       <Upload {...props} fileList={this.state.fileList}>
-        <Button>
-          <Icon type="upload" /> Upload file
+        <Button title="Upload a file with sentences">
+          <Icon type="upload" /> Upload
         </Button>
       </Upload>
     )

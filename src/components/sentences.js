@@ -1,9 +1,8 @@
 // TODO search box for available sentences
 // TODO drag sentences to sort them
-// TODO copy final sentences to clipboard
 // TODO remove docs directory
 import React from "react"
-import { Button, Table, Row, Col, Input } from "antd"
+import { Button, Table, Row, Col, Input, message } from "antd"
 import UploadSentenceFile from "./upload-sentence-file"
 const { Column } = Table
 
@@ -111,6 +110,22 @@ class Sentences extends React.Component {
     this.setState({ available })
   }
 
+  copyToClipboard() {
+    var copyTextarea = document.querySelector("#finalMessage")
+    copyTextarea.select()
+
+    try {
+      var successful = document.execCommand("copy")
+      var msg = successful ? "successful" : "unsuccessful"
+      message.success("Final message copied to the clipboard.")
+    } catch (err) {
+      console.log(err)
+      message.error(
+        "Oops, unable to copy for some reason. Check the console log."
+      )
+    }
+  }
+
   render() {
     return (
       <Row gutter={16}>
@@ -158,18 +173,28 @@ class Sentences extends React.Component {
           </Table>
         </Col>
         <Col span={7}>
-          <Row gutter={16}>
+          <Row gutter={8}>
             <Col span={8}>
               <UploadSentenceFile onFileUploaded={this.onFileUploaded} />
             </Col>
             <Col span={8}>
-              <Button type="primary" block disabled={true}>
-                Copy to clipboard
+              <Button
+                type="primary"
+                block
+                title="Copy the final message to the clipboard"
+                onClick={this.copyToClipboard}
+              >
+                Copy
               </Button>
             </Col>
             <Col span={8}>
-              <Button type="danger" block onClick={this.clearSentences}>
-                Clear sentences
+              <Button
+                type="danger"
+                block
+                onClick={this.clearSentences}
+                title="Clear chosen sentences"
+              >
+                Clear
               </Button>
             </Col>
           </Row>
@@ -181,7 +206,11 @@ class Sentences extends React.Component {
           <p></p>
           <Row>
             <span>Final message:</span>
-            <Input.TextArea autosize={true} value={this.state.finalMessage} />
+            <Input.TextArea
+              id="finalMessage"
+              autosize={true}
+              value={this.state.finalMessage}
+            />
           </Row>
         </Col>
       </Row>
