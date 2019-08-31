@@ -1,24 +1,11 @@
-// FIXME load sentences from file
-// TODO copy final sentences to clipboard
-// TODO drag sentences to sort them
 // TODO search box for available sentences
+// TODO drag sentences to sort them
+// TODO copy final sentences to clipboard
 // TODO remove docs directory
 import React from "react"
 import { Button, Table, Row, Col, Input } from "antd"
-const leftColumns = [
-  {
-    title: "Available sentences",
-    dataIndex: "sentence",
-    key: "sentence",
-  },
-]
-const rightColumns = [
-  {
-    title: "Chosen sentences",
-    dataIndex: "sentence",
-    key: "sentence",
-  },
-]
+import UploadSentenceFile from "./upload-sentence-file"
+const { Column } = Table
 
 const defaultSentences = `
 Hi, {person},
@@ -39,21 +26,19 @@ const parseSentences = text =>
     .map(e => e.trim())
     .filter(e => e !== "")
 
-const loadedSentences = []
-var i = 0
-parseSentences(defaultSentences).forEach(element => {
-  ++i
-  loadedSentences.push({
-    key: i.toString(),
-    sentence: element,
-  })
-})
-
 class Sentences extends React.Component {
   constructor(props) {
     super(props)
+
     const keySet = new Set()
-    this.state = { chosen: [], keys: keySet, finalMessage: "", person: "" }
+    const available = this.pushSentenceObjects(defaultSentences)
+    this.state = {
+      available,
+      chosen: [],
+      keys: keySet,
+      finalMessage: "",
+      person: "",
+    }
 
     // This binding is necessary to make `this` work in the callback
     this.buildFinalMessage = this.buildFinalMessage.bind(this)
@@ -61,6 +46,20 @@ class Sentences extends React.Component {
     this.removeSentence = this.removeSentence.bind(this)
     this.clearSentences = this.clearSentences.bind(this)
     this.onChange = this.onChange.bind(this)
+    this.onFileUploaded = this.onFileUploaded.bind(this)
+  }
+
+  pushSentenceObjects(sentencesArray) {
+    var index = 0,
+      targetArray = []
+    parseSentences(sentencesArray).forEach(element => {
+      targetArray.push({
+        key: index.toString(),
+        sentence: element,
+      })
+      ++index
+    })
+    return targetArray
   }
 
   buildFinalMessage(person) {
@@ -106,14 +105,19 @@ class Sentences extends React.Component {
     this.buildFinalMessage(event.target.value)
   }
 
+  onFileUploaded(textContent) {
+    this.clearSentences()
+    let available = this.pushSentenceObjects(textContent)
+    this.setState({ available })
+  }
+
   render() {
     return (
       <Row gutter={16}>
         <Col span={8}>
           <Table
             pagination={false}
-            columns={leftColumns}
-            dataSource={loadedSentences}
+            dataSource={this.state.available}
             size="small"
             showHeader={true}
             onRow={(record, rowIndex) => {
@@ -123,12 +127,17 @@ class Sentences extends React.Component {
                 },
               }
             }}
-          />
+          >
+            <Column
+              title="Available sentences"
+              dataIndex="sentence"
+              key="sentence"
+            />
+          </Table>
         </Col>
         <Col span={8}>
           <Table
             pagination={false}
-            columns={rightColumns}
             dataSource={this.state.chosen}
             size="small"
             showHeader={true}
@@ -139,30 +148,38 @@ class Sentences extends React.Component {
                 },
               }
             }}
-          />
+          >
+            <Column
+              title="Chosen sentences"
+              dataIndex="sentence"
+              key="sentence"
+            />
+          </Table>
         </Col>
         <Col span={8}>
           <Row gutter={16}>
-            <Col span={12}>
+            <Col span={8}>
+              <UploadSentenceFile onFileUploaded={this.onFileUploaded} />
+            </Col>
+            <Col span={8}>
               <Button type="primary" block disabled={true}>
                 Copy to clipboard
               </Button>
             </Col>
-            <Col span={12}>
+            <Col span={8}>
               <Button type="danger" block onClick={this.clearSentences}>
-                Clear all sentences
+                Clear sentences
               </Button>
             </Col>
           </Row>
           <p></p>
-          <p></p>
-          <span>Person:</span>
           <Row>
+            <span>Person:</span>
             <Input id="person" onChange={this.onChange} />
           </Row>
           <p></p>
-          <span>Final message:</span>
           <Row>
+            <span>Final message:</span>
             <Input.TextArea autosize={true} value={this.state.finalMessage} />
           </Row>
         </Col>
