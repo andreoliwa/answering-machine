@@ -1,6 +1,5 @@
 // TODO search box for available sentences
 // TODO drag sentences to sort them
-// TODO remove docs directory
 import React from "react"
 import { Button, Table, Row, Col, Input, message } from "antd"
 import UploadSentenceFile from "./upload-sentence-file"
@@ -115,8 +114,7 @@ class Sentences extends React.Component {
     copyTextarea.select()
 
     try {
-      var successful = document.execCommand("copy")
-      var msg = successful ? "successful" : "unsuccessful"
+      document.execCommand("copy")
       message.success("Final message copied to the clipboard.")
     } catch (err) {
       console.log(err)
