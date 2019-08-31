@@ -114,10 +114,11 @@ class Sentences extends React.Component {
   render() {
     return (
       <Row gutter={16}>
-        <Col span={8}>
+        <Col span={10}>
           <Table
             pagination={false}
             dataSource={this.state.available}
+            scroll={{ y: 600 }}
             size="small"
             showHeader={true}
             onRow={(record, rowIndex) => {
@@ -135,7 +136,7 @@ class Sentences extends React.Component {
             />
           </Table>
         </Col>
-        <Col span={8}>
+        <Col span={7}>
           <Table
             pagination={false}
             dataSource={this.state.chosen}
@@ -156,7 +157,7 @@ class Sentences extends React.Component {
             />
           </Table>
         </Col>
-        <Col span={8}>
+        <Col span={7}>
           <Row gutter={16}>
             <Col span={8}>
               <UploadSentenceFile onFileUploaded={this.onFileUploaded} />
