@@ -19,7 +19,7 @@ const Header = ({ siteTitle }) => {
   const classes = useStyles()
   return (
     <AppBar
-      position="sticky"
+      position="static"
       className={classes.root}
       style={{
         background: `rebeccapurple`,
