@@ -5,22 +5,20 @@ import UploadSentenceFile from "./upload-sentence-file"
 import MaterialTable from "material-table"
 
 const defaultSentences = `
-Hi, {person},
-Hello, {person},
-Dear {person},
-
+Hi, {person},|
+Hello, {person},|
+Dear {person},|
 Thanks.
 Sorry.
-
-Best regards.
-Have a nice weekend and best regards.
-Have a nice day and best regards.
+|Best regards.|Me
+|Have a nice weekend and best regards.|Me
+|Have a nice day and best regards.|Me
 `
 
-const parseSentences = text =>
+const cleanSentences = text =>
   text
     .split("\n")
-    .map(e => e.trim())
+    .map(e => e.trim().replace(/\|/g, "¶"))
     .filter(e => e !== "")
 
 class Sentences extends React.Component {
@@ -44,7 +42,7 @@ class Sentences extends React.Component {
   pushSentenceObjects(sentencesArray) {
     var index = 0,
       targetArray = []
-    parseSentences(sentencesArray).forEach(element => {
+    cleanSentences(sentencesArray).forEach(element => {
       targetArray.push({
         key: index.toString(),
         sentence: element,
@@ -60,7 +58,10 @@ class Sentences extends React.Component {
       sentences.push(element.sentence)
     })
 
-    var finalMessage = sentences.join("\n").replace(/\{person\}/g, person)
+    var finalMessage = sentences
+      .join("\n")
+      .replace(/¶/g, "\n")
+      .replace(/\{person\}/g, person)
     this.setState({ finalMessage: finalMessage })
   }
 
