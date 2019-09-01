@@ -1,8 +1,9 @@
-// TODO search box for available sentences
 // TODO drag sentences to sort them
 import React from "react"
 import { Button, Table, Row, Col, Input, message } from "antd"
 import UploadSentenceFile from "./upload-sentence-file"
+import MaterialTable from "material-table"
+
 const { Column } = Table
 
 const defaultSentences = `
@@ -65,7 +66,7 @@ class Sentences extends React.Component {
     this.setState({ finalMessage: finalMessage })
   }
 
-  addSentence(record, rowIndex) {
+  addSentence(record) {
     if (this.state.keys.has(record.key)) {
       return
     }
@@ -76,7 +77,7 @@ class Sentences extends React.Component {
     this.setState({ keys: this.state.keys, chosen: this.state.chosen })
   }
 
-  removeSentence(record, rowIndex) {
+  removeSentence(record) {
     this.state.keys.delete(record.key)
     for (let index = 0; index < this.state.chosen.length; index++) {
       const element = this.state.chosen[index]
@@ -120,29 +121,25 @@ class Sentences extends React.Component {
   }
 
   render() {
+    // https://github.com/mbrn/material-table
     return (
       <Row gutter={16}>
         <Col span={10}>
-          <Table
-            pagination={false}
-            dataSource={this.state.available}
-            scroll={{ y: 600 }}
-            size="small"
-            showHeader={true}
-            onRow={(record, rowIndex) => {
-              return {
-                onClick: () => {
-                  this.addSentence(record, rowIndex)
-                },
-              }
+          <MaterialTable
+            title="Available sentences"
+            columns={[{ field: "sentence" }]}
+            data={this.state.available}
+            // https://material-table.com/#/docs/all-props
+            options={{
+              padding: "dense",
+              header: false,
+              pageSize: this.state.available.length,
+              paging: false,
             }}
-          >
-            <Column
-              title="Available sentences"
-              dataIndex="sentence"
-              key="sentence"
-            />
-          </Table>
+            onRowClick={(event, rowData) => {
+              this.addSentence(rowData)
+            }}
+          />
         </Col>
         <Col span={7}>
           <Table
@@ -176,6 +173,7 @@ class Sentences extends React.Component {
                 block
                 title="Copy the final message to the clipboard"
                 onClick={this.copyToClipboard}
+                disabled={!this.state.chosen.length}
               >
                 Copy
               </Button>
@@ -186,6 +184,7 @@ class Sentences extends React.Component {
                 block
                 onClick={this.clearSentences}
                 title="Clear chosen sentences"
+                disabled={!this.state.chosen.length}
               >
                 Clear
               </Button>
