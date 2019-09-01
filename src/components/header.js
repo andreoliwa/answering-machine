@@ -1,22 +1,32 @@
 import { Link } from "gatsby"
 import PropTypes from "prop-types"
 import React from "react"
+import { makeStyles } from "@material-ui/core/styles"
+import AppBar from "@material-ui/core/AppBar"
+import Toolbar from "@material-ui/core/Toolbar"
+import Typography from "@material-ui/core/Typography"
 
-const Header = ({ siteTitle }) => (
-  <header
-    style={{
-      background: `rebeccapurple`,
-      marginBottom: `0.93rem`,
-    }}
-  >
-    <div
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+}))
+
+const Header = ({ siteTitle }) => {
+  const classes = useStyles()
+  return (
+    <AppBar
+      position="sticky"
+      className={classes.root}
       style={{
-        margin: `0 auto`,
-        maxWidth: 1960,
-        padding: `0.93rem 1.0875rem`,
+        background: `rebeccapurple`,
+        marginBottom: `0.93rem`,
       }}
     >
-      <h1 style={{ margin: 0 }}>
+      <Toolbar variant="dense">
         <Link
           to="/"
           style={{
@@ -24,13 +34,14 @@ const Header = ({ siteTitle }) => (
             textDecoration: `none`,
           }}
         >
-          {siteTitle}
+          <Typography variant="h6" color="inherit">
+            {siteTitle}
+          </Typography>
         </Link>
-      </h1>
-    </div>
-  </header>
-)
-
+      </Toolbar>
+    </AppBar>
+  )
+}
 Header.propTypes = {
   siteTitle: PropTypes.string,
 }
