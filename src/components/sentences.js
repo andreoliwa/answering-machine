@@ -1,10 +1,8 @@
 // TODO drag sentences to sort them
 import React from "react"
-import { Button, Table, Row, Col, Input, message } from "antd"
+import { Button, Row, Col, Input, message } from "antd"
 import UploadSentenceFile from "./upload-sentence-file"
 import MaterialTable from "material-table"
-
-const { Column } = Table
 
 const defaultSentences = `
 Hi, {person},
@@ -142,25 +140,28 @@ class Sentences extends React.Component {
           />
         </Col>
         <Col span={7}>
-          <Table
-            pagination={false}
-            dataSource={this.state.chosen}
-            size="small"
-            showHeader={true}
-            onRow={(record, rowIndex) => {
-              return {
-                onClick: () => {
-                  this.removeSentence(record, rowIndex)
-                },
-              }
+          <MaterialTable
+            title="Chosen sentences"
+            columns={[{ field: "sentence" }]}
+            data={this.state.chosen}
+            // // https://material-table.com/#/docs/all-props
+            options={{
+              padding: "dense",
+              header: false,
+              pageSize: this.state.chosen.length,
+              paging: false,
+              search: false,
             }}
-          >
-            <Column
-              title="Chosen sentences"
-              dataIndex="sentence"
-              key="sentence"
-            />
-          </Table>
+            actions={[
+              {
+                icon: "delete",
+                tooltip: "Remove",
+                onClick: (event, rowData) => {
+                  this.removeSentence(rowData)
+                },
+              },
+            ]}
+          />
         </Col>
         <Col span={7}>
           <Row gutter={8}>
