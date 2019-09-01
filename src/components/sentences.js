@@ -28,20 +28,15 @@ class Sentences extends React.Component {
   constructor(props) {
     super(props)
 
-    const keySet = new Set()
-    const available = this.pushSentenceObjects(defaultSentences)
     this.state = {
-      available,
+      available: this.pushSentenceObjects(defaultSentences),
       chosen: [],
-      keys: keySet,
+      keys: new Set(),
       finalMessage: "",
       person: "",
     }
 
-    // This binding is necessary to make `this` work in the callback
-    this.buildFinalMessage = this.buildFinalMessage.bind(this)
-    this.addSentence = this.addSentence.bind(this)
-    this.removeSentence = this.removeSentence.bind(this)
+    // Some bindings are necessary to make `this` work in the callback
     this.clearSentences = this.clearSentences.bind(this)
     this.onChange = this.onChange.bind(this)
     this.onFileUploaded = this.onFileUploaded.bind(this)
