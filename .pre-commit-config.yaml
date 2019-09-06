@@ -1,0 +1,37 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.3.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v6.3.0
+    hooks:
+      - id: eslint
+        args: [--color]
+        additional_dependencies:
+          - babel-eslint
+          - eslint-config-airbnb
+          - eslint-config-prettier
+          - eslint-import-resolver-babel-module
+          - eslint-plugin-import
+          - eslint-plugin-jsx-a11y
+          - eslint-plugin-prettier
+          - eslint-plugin-babel
+          - eslint-plugin-react
+          - eslint-plugin-react-hooks
+          - eslint-watch
+          - prettier
+          - babel-plugin-module-resolver
+          - "@babel/core"
+          - "@material-ui/core"
+  - repo: https://github.com/openstack/bashate
+    rev: 0.6.0
+    hooks:
+      - id: bashate
+  - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
+    rev: 2.0.0
+    hooks:
+      - id: commitlint
+        stages: [commit-msg]
+        additional_dependencies: ["@commitlint/config-conventional"]

@@ -49,5 +49,10 @@
   },
   "bugs": {
     "url": "https://github.com/andreoliwa/answering-machine/issues"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   }
 }

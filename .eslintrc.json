@@ -1,0 +1,23 @@
+// https://eslint.org/docs/user-guide/configuring
+{
+  // FIXME "airbnb"
+  "extends": ["plugin:import/errors", "plugin:prettier/recommended"],
+  "settings": {
+    "import/resolver": {
+      "babel-module": {}
+    }
+  },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "legacyDecorators": true
+    }
+  },
+  "env": {
+    "node": true,
+    "browser": true,
+    "jest": true
+  },
+  "plugins": ["prettier", "react-hooks"],
+  "reportUnusedDisableDirectives": true
+}
