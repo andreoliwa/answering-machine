@@ -1,8 +1,10 @@
 // TODO drag sentences to sort them
 import React from "react"
-import { Button, Row, Col, Input, message } from "antd"
+import { Button, Input, message } from "antd"
 import UploadSentenceFile from "./upload-sentence-file"
 import MaterialTable from "material-table"
+import ChosenSentences from "./chosen-sentences"
+import Grid from "@material-ui/core/Grid"
 
 const defaultSentences = `
 Hi, {person},|
@@ -35,8 +37,8 @@ class Sentences extends React.Component {
 
     // Some bindings are necessary to make `this` work in the callback
     this.clearSentences = this.clearSentences.bind(this)
-    this.onChange = this.onChange.bind(this)
     this.onFileUploaded = this.onFileUploaded.bind(this)
+    this.removeSentence = this.removeSentence.bind(this)
   }
 
   pushSentenceObjects(sentencesArray) {
@@ -52,7 +54,7 @@ class Sentences extends React.Component {
     return targetArray
   }
 
-  buildFinalMessage(person) {
+  buildFinalMessage() {
     var sentences = []
     this.state.chosen.forEach(element => {
       sentences.push(element.sentence)
@@ -61,41 +63,33 @@ class Sentences extends React.Component {
     var finalMessage = sentences
       .join("\n")
       .replace(/¶/g, "\n")
-      .replace(/\{person\}/g, person)
-    this.setState({ finalMessage: finalMessage })
+      .replace(/\{person\}/g, this.state.person)
+    return finalMessage
   }
 
   addSentence(record) {
-    if (this.state.keys.has(record.key)) {
+    const chosen = this.state.chosen
+    if (chosen.some(e => e.key === record.key)) {
       return
     }
-    this.state.keys.add(record.key)
-    this.state.chosen.push(record)
-
-    this.buildFinalMessage(this.state.person)
-    this.setState({ keys: this.state.keys, chosen: this.state.chosen })
+    chosen.push(record)
+    this.setState({ chosen })
   }
 
   removeSentence(record) {
-    this.state.keys.delete(record.key)
-    for (let index = 0; index < this.state.chosen.length; index++) {
-      const element = this.state.chosen[index]
+    const chosen = this.state.chosen
+    for (let index = 0; index < chosen.length; index++) {
+      const element = chosen[index]
       if (element === record) {
-        this.state.chosen.splice(index, 1)
+        chosen.splice(index, 1)
       }
     }
 
-    this.buildFinalMessage(this.state.person)
-    this.setState({ keys: this.state.keys, chosen: this.state.chosen })
+    this.setState({ chosen })
   }
 
   clearSentences() {
     this.setState({ chosen: [], keys: new Set(), finalMessage: [] })
-  }
-
-  onChange(event) {
-    this.setState({ person: event.target.value })
-    this.buildFinalMessage(event.target.value)
   }
 
   onFileUploaded(textContent) {
@@ -120,10 +114,9 @@ class Sentences extends React.Component {
   }
 
   render() {
-    // https://github.com/mbrn/material-table
     return (
-      <Row gutter={16}>
-        <Col span={10}>
+      <Grid container spacing={2}>
+        <Grid item xs={4}>
           <MaterialTable
             title="Available sentences"
             columns={[{ field: "sentence" }]}
@@ -139,37 +132,20 @@ class Sentences extends React.Component {
               this.addSentence(rowData)
             }}
           />
-        </Col>
-        <Col span={7}>
-          <MaterialTable
-            title="Chosen sentences"
-            columns={[{ field: "sentence" }]}
+        </Grid>
+        <Grid item xs={4}>
+          <ChosenSentences
+            state={this.state}
             data={this.state.chosen}
-            // // https://material-table.com/#/docs/all-props
-            options={{
-              padding: "dense",
-              header: false,
-              pageSize: this.state.chosen.length,
-              paging: false,
-              search: false,
-            }}
-            actions={[
-              {
-                icon: "delete",
-                tooltip: "Remove",
-                onClick: (event, rowData) => {
-                  this.removeSentence(rowData)
-                },
-              },
-            ]}
+            removeSentence={this.removeSentence}
           />
-        </Col>
-        <Col span={7}>
-          <Row gutter={8}>
-            <Col span={8}>
+        </Grid>
+        <Grid item xs={4}>
+          <Grid container spacing={2}>
+            <Grid item xs={4}>
               <UploadSentenceFile onFileUploaded={this.onFileUploaded} />
-            </Col>
-            <Col span={8}>
+            </Grid>
+            <Grid item xs={4}>
               <Button
                 type="primary"
                 block
@@ -179,8 +155,8 @@ class Sentences extends React.Component {
               >
                 Copy
               </Button>
-            </Col>
-            <Col span={8}>
+            </Grid>
+            <Grid item xs={4}>
               <Button
                 type="danger"
                 block
@@ -190,24 +166,29 @@ class Sentences extends React.Component {
               >
                 Clear
               </Button>
-            </Col>
-          </Row>
+            </Grid>
+          </Grid>
           <p></p>
-          <Row>
+          <Grid item xs={12}>
             <span>Person:</span>
-            <Input id="person" onChange={this.onChange} />
-          </Row>
+            <Input
+              id="person"
+              onChange={event => {
+                this.setState({ person: event.target.value })
+              }}
+            />
+          </Grid>
           <p></p>
-          <Row>
+          <Grid item xs={12}>
             <span>Final message:</span>
             <Input.TextArea
               id="finalMessage"
               autosize={true}
-              value={this.state.finalMessage}
+              value={this.buildFinalMessage()}
             />
-          </Row>
-        </Col>
-      </Row>
+          </Grid>
+        </Grid>
+      </Grid>
     )
   }
 }
