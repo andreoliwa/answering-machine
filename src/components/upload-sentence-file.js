@@ -1,43 +1,33 @@
 import React from "react"
 import { Upload, Button, Icon } from "antd"
 
-class UploadSentenceFile extends React.Component {
-  state = {
-    fileList: [],
-    content: "",
-  }
-
-  handleChange = info => {
-    let fileList = [...info.fileList]
-    let content = ""
-
-    fileList = fileList.map(file => {
+const UploadSentenceFile = ({ onFileUploaded, ...otherProps }) => {
+  const handleChange = info => {
+    let newFileList = [...info.fileList]
+    newFileList.map(file => {
       var reader = new FileReader()
       reader.onload = e => {
-        content = e.target.result
-        this.props.onFileUploaded(content)
+        onFileUploaded(e.target.result)
       }
       reader.readAsText(file.originFileObj)
 
       return file
     })
-
-    this.setState({ fileList, content })
   }
 
-  render() {
-    const props = {
-      onChange: this.handleChange,
-      multiple: false,
-      showUploadList: false,
-    }
-    return (
-      <Upload {...props} fileList={this.state.fileList}>
-        <Button title="Upload a file with sentences">
-          <Icon type="upload" /> Upload
-        </Button>
-      </Upload>
-    )
+  const uploadProps = {
+    onChange: handleChange,
+    multiple: false,
+    showUploadList: false,
   }
+
+  return (
+    <Upload {...uploadProps} {...otherProps}>
+      <Button title="Upload a file with sentences">
+        <Icon type="upload" /> Upload
+      </Button>
+    </Upload>
+  )
 }
+
 export default UploadSentenceFile
