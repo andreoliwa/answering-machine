@@ -1,7 +1,6 @@
 // https://eslint.org/docs/user-guide/configuring
 {
-  // FIXME "airbnb"
-  "extends": ["plugin:import/errors", "plugin:prettier/recommended"],
+  "extends": ["airbnb", "plugin:import/errors", "plugin:prettier/recommended"],
   "settings": {
     "import/resolver": {
       "babel-module": {}

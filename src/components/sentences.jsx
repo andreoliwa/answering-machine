@@ -1,9 +1,9 @@
 import React from "react"
 import { Button, Input, message } from "antd"
-import UploadSentenceFile from "./upload-sentence-file"
 import MaterialTable from "material-table"
-import ChosenSentences from "./chosen-sentences"
 import Grid from "@material-ui/core/Grid"
+import UploadSentenceFile from "./upload-sentence-file"
+import ChosenSentences from "./chosen-sentences"
 
 const defaultSentences = `
 Hi, {person},|
@@ -40,8 +40,8 @@ class Sentences extends React.Component {
   }
 
   pushSentenceObjects(sentencesArray) {
-    var index = 0,
-      targetArray = []
+    let index = 0
+    const targetArray = []
     cleanSentences(sentencesArray).forEach(element => {
       targetArray.push({
         key: index.toString(),
@@ -53,12 +53,12 @@ class Sentences extends React.Component {
   }
 
   buildFinalMessage() {
-    var sentences = []
+    const sentences = []
     this.state.chosen.forEach(element => {
       sentences.push(element.sentence)
     })
 
-    var finalMessage = sentences
+    const finalMessage = sentences
       .join("\n")
       .replace(/¶/g, "\n")
       .replace(/\{person\}/g, this.state.person)
@@ -66,7 +66,7 @@ class Sentences extends React.Component {
   }
 
   addSentence(record) {
-    const chosen = this.state.chosen
+    const { chosen } = this.state
     if (chosen.some(e => e.key === record.key)) {
       return
     }
@@ -75,7 +75,7 @@ class Sentences extends React.Component {
   }
 
   removeSentence(record) {
-    const chosen = this.state.chosen
+    const { chosen } = this.state
     for (let index = 0; index < chosen.length; index++) {
       const element = chosen[index]
       if (element === record) {
@@ -91,7 +91,7 @@ class Sentences extends React.Component {
   }
 
   onFileUploaded(textContent) {
-    const chosen = this.state.chosen
+    const { chosen } = this.state
     chosen.splice(0)
 
     const available = this.pushSentenceObjects(textContent)
@@ -100,7 +100,7 @@ class Sentences extends React.Component {
   }
 
   copyToClipboard() {
-    var copyTextarea = document.querySelector("#finalMessage")
+    const copyTextarea = document.querySelector("#finalMessage")
     copyTextarea.select()
 
     try {
@@ -162,7 +162,7 @@ class Sentences extends React.Component {
                 type="danger"
                 block
                 onClick={event => {
-                  const chosen = this.state.chosen
+                  const { chosen } = this.state
                   chosen.splice(0)
                   this.setState({ chosen })
                 }}
@@ -173,7 +173,7 @@ class Sentences extends React.Component {
               </Button>
             </Grid>
           </Grid>
-          <p></p>
+          <p />
           <Grid item xs={12}>
             <span>Person:</span>
             <Input
@@ -183,12 +183,12 @@ class Sentences extends React.Component {
               }}
             />
           </Grid>
-          <p></p>
+          <p />
           <Grid item xs={12}>
             <span>Final message:</span>
             <Input.TextArea
               id="finalMessage"
-              autosize={true}
+              autosize
               value={this.buildFinalMessage()}
             />
           </Grid>

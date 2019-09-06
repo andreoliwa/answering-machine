@@ -100,7 +100,7 @@ class ChosenSentences extends React.Component {
             {(provided, snapshot) => (
               <List
                 // className={classes.list}
-                dense={true}
+                dense
                 {...provided.droppableProps}
                 ref={provided.innerRef}
                 style={getListStyle(snapshot.isDraggingOver)}

@@ -3,9 +3,9 @@ import { Upload, Button, Icon } from "antd"
 
 const UploadSentenceFile = ({ onFileUploaded, ...otherProps }) => {
   const handleChange = info => {
-    let newFileList = [...info.fileList]
+    const newFileList = [...info.fileList]
     newFileList.map(file => {
-      var reader = new FileReader()
+      const reader = new FileReader()
       reader.onload = e => {
         onFileUploaded(e.target.result)
       }

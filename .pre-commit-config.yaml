@@ -8,7 +8,9 @@ repos:
     rev: v6.3.0
     hooks:
       - id: eslint
-        args: [--color]
+        # https://github.com/eslint/eslint
+        # https://eslint.org/docs/user-guide/command-line-interface
+        args: [--color, --fix]
         additional_dependencies:
           - babel-eslint
           - eslint-config-airbnb
