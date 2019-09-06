@@ -32,7 +32,6 @@ module.exports = {
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,
-    // TODO remove antd and replace by MUI
     // https://github.com/bskimball/gatsby-plugin-antd
     `gatsby-plugin-antd`,
     // https://www.gatsbyjs.org/packages/gatsby-plugin-material-ui/

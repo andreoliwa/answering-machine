@@ -5,6 +5,8 @@ import { makeStyles } from "@material-ui/core/styles"
 import AppBar from "@material-ui/core/AppBar"
 import Toolbar from "@material-ui/core/Toolbar"
 import Typography from "@material-ui/core/Typography"
+import { Icon } from "antd"
+import IconButton from "@material-ui/core/IconButton"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -12,6 +14,15 @@ const useStyles = makeStyles(theme => ({
   },
   menuButton: {
     marginRight: theme.spacing(2),
+  },
+  grow: {
+    flexGrow: 1,
+  },
+  sectionDesktop: {
+    display: "none",
+    [theme.breakpoints.up("md")]: {
+      display: "flex",
+    },
   },
 }))
 
@@ -38,6 +49,18 @@ const Header = ({ siteTitle }) => {
             {siteTitle}
           </Typography>
         </Link>
+        <div className={classes.grow} />
+        <div className={classes.sectionDesktop}>
+          <IconButton
+            edge="end"
+            color="inherit"
+            title="GitHub project"
+            href="https://github.com/andreoliwa/answering-machine"
+            target="_blank"
+          >
+            <Icon type="github" />
+          </IconButton>
+        </div>
       </Toolbar>
     </AppBar>
   )
