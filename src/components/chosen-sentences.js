@@ -57,10 +57,12 @@ const getListStyle = isDraggingOver => ({
 class ChosenSentences extends React.Component {
   constructor(props) {
     super(props)
+    // A local state with the sentences is needed, I couldn't reuse the parent sentences.
+    // The new sentences were not re-rendered, and the list still had the old sentences sequence.
     this.state = {
-      items: props.data,
-      setNewOrder: props.setNewOrder,
+      originalSentences: props.chosen,
     }
+    this.onOrderChanged = props.onOrderChanged
     this.removeSentence = props.removeSentence
 
     this.onDragEnd = this.onDragEnd.bind(this)
@@ -72,16 +74,16 @@ class ChosenSentences extends React.Component {
       return
     }
 
-    const items = reorder(
-      this.state.items,
+    const originalSentences = reorder(
+      this.state.originalSentences,
       result.source.index,
       result.destination.index
     )
 
     this.setState({
-      items,
+      originalSentences,
     })
-    this.state.setNewOrder(items)
+    this.onOrderChanged(originalSentences)
   }
 
   render() {
@@ -103,7 +105,7 @@ class ChosenSentences extends React.Component {
                 ref={provided.innerRef}
                 style={getListStyle(snapshot.isDraggingOver)}
               >
-                {this.state.items.map((record, index) => (
+                {this.state.originalSentences.map((record, index) => (
                   <Draggable
                     key={record.key}
                     draggableId={record.key}

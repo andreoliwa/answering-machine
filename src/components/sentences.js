@@ -11,6 +11,7 @@ Hello, {person},|
 Dear {person},|
 Thanks.
 Sorry.
+Let's keep in touch.
 |Best regards.|Me
 |Have a nice weekend and best regards.|Me
 |Have a nice day and best regards.|Me
@@ -29,16 +30,13 @@ class Sentences extends React.Component {
     this.state = {
       available: this.pushSentenceObjects(defaultSentences),
       chosen: [],
-      keys: new Set(),
-      finalMessage: "",
       person: "",
     }
 
     // Some bindings are necessary to make `this` work in the callback
-    this.clearSentences = this.clearSentences.bind(this)
     this.onFileUploaded = this.onFileUploaded.bind(this)
     this.removeSentence = this.removeSentence.bind(this)
-    this.setNewOrder = this.setNewOrder.bind(this)
+    this.onOrderChanged = this.onOrderChanged.bind(this)
   }
 
   pushSentenceObjects(sentencesArray) {
@@ -88,18 +86,13 @@ class Sentences extends React.Component {
     this.setState({ chosen })
   }
 
-  setNewOrder(chosen) {
-    this.setState({ chosen })
-  }
-
-  clearSentences() {
-    this.setState({ chosen: [], keys: new Set(), finalMessage: [] })
+  onOrderChanged(reorderedChosenSentences) {
+    this.setState({ chosen: reorderedChosenSentences })
   }
 
   onFileUploaded(textContent) {
-    this.clearSentences()
     let available = this.pushSentenceObjects(textContent)
-    this.setState({ available })
+    this.setState({ chosen: [], available })
   }
 
   copyToClipboard() {
@@ -139,10 +132,9 @@ class Sentences extends React.Component {
         </Grid>
         <Grid item xs={4}>
           <ChosenSentences
-            state={this.state}
-            data={this.state.chosen}
+            chosen={this.state.chosen}
             removeSentence={this.removeSentence}
-            setNewOrder={this.setNewOrder}
+            onOrderChanged={this.onOrderChanged}
           />
         </Grid>
         <Grid item xs={4}>
@@ -165,7 +157,11 @@ class Sentences extends React.Component {
               <Button
                 type="danger"
                 block
-                onClick={this.clearSentences}
+                onClick={event => {
+                  const chosen = this.state.chosen
+                  chosen.splice(0)
+                  this.setState({ chosen })
+                }}
                 title="Clear chosen sentences"
                 disabled={!this.state.chosen.length}
               >
