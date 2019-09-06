@@ -91,8 +91,12 @@ class Sentences extends React.Component {
   }
 
   onFileUploaded(textContent) {
-    let available = this.pushSentenceObjects(textContent)
-    this.setState({ chosen: [], available })
+    const chosen = this.state.chosen
+    chosen.splice(0)
+
+    const available = this.pushSentenceObjects(textContent)
+
+    this.setState({ chosen, available })
   }
 
   copyToClipboard() {
