@@ -1,4 +1,3 @@
-// TODO drag sentences to sort them
 import React from "react"
 import { Button, Input, message } from "antd"
 import UploadSentenceFile from "./upload-sentence-file"
@@ -39,6 +38,7 @@ class Sentences extends React.Component {
     this.clearSentences = this.clearSentences.bind(this)
     this.onFileUploaded = this.onFileUploaded.bind(this)
     this.removeSentence = this.removeSentence.bind(this)
+    this.setNewOrder = this.setNewOrder.bind(this)
   }
 
   pushSentenceObjects(sentencesArray) {
@@ -85,6 +85,10 @@ class Sentences extends React.Component {
       }
     }
 
+    this.setState({ chosen })
+  }
+
+  setNewOrder(chosen) {
     this.setState({ chosen })
   }
 
@@ -138,6 +142,7 @@ class Sentences extends React.Component {
             state={this.state}
             data={this.state.chosen}
             removeSentence={this.removeSentence}
+            setNewOrder={this.setNewOrder}
           />
         </Grid>
         <Grid item xs={4}>
