@@ -39,13 +39,13 @@ class Sentences extends React.Component {
     this.onOrderChanged = this.onOrderChanged.bind(this)
   }
 
-  pushSentenceObjects(sentencesArray) {
+  pushSentenceObjects(sentencesAsText) {
     let index = 0
     const targetArray = []
-    cleanSentences(sentencesArray).forEach(element => {
+    cleanSentences(sentencesAsText).forEach(line => {
       targetArray.push({
         key: index.toString(),
-        sentence: element,
+        sentence: line,
       })
       ++index
     })
@@ -54,8 +54,8 @@ class Sentences extends React.Component {
 
   buildFinalMessage() {
     const sentences = []
-    this.state.chosen.forEach(element => {
-      sentences.push(element.sentence)
+    this.state.chosen.forEach(obj => {
+      sentences.push(obj.sentence)
     })
 
     const finalMessage = sentences
@@ -91,10 +91,25 @@ class Sentences extends React.Component {
   }
 
   onFileUploaded(textContent) {
-    const { chosen } = this.state
-    chosen.splice(0)
-
+    // Get all available sentences from the text file
     const available = this.pushSentenceObjects(textContent)
+
+    // Save existing sentences on a set
+    const { chosen } = this.state
+    let existingSentences = new Set()
+    chosen
+      .filter(a => available.some(b => a.sentence === b.sentence))
+      .forEach(obj => {
+        existingSentences.add(obj.sentence)
+      })
+
+    // Clear chosen sentences and restore the previously existing sentences.
+    chosen.splice(0)
+    available.forEach(obj => {
+      if (existingSentences.has(obj.sentence)) {
+        chosen.push(obj)
+      }
+    })
 
     this.setState({ chosen, available })
   }
