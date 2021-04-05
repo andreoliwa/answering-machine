@@ -1,11 +1,13 @@
+ci:
+  skip: [eslint]
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.3.0
+    rev: v3.4.0
     hooks:
       - id: end-of-file-fixer
       - id: trailing-whitespace
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v6.3.0
+    rev: v7.23.0
     hooks:
       - id: eslint
         # https://github.com/eslint/eslint
@@ -28,11 +30,11 @@ repos:
           - "@babel/core"
           - "@material-ui/core"
   - repo: https://github.com/openstack/bashate
-    rev: 0.6.0
+    rev: 2.0.0
     hooks:
       - id: bashate
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
-    rev: 2.0.0
+    rev: v4.1.0
     hooks:
       - id: commitlint
         stages: [commit-msg]
