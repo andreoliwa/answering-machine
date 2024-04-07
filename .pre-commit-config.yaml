@@ -2,12 +2,12 @@ ci:
   skip: [eslint]
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.3.0
+    rev: v4.6.0
     hooks:
       - id: end-of-file-fixer
       - id: trailing-whitespace
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v8.56.0
+    rev: v8.22.0
     hooks:
       - id: eslint
         # https://github.com/eslint/eslint
