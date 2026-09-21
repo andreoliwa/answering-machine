@@ -6,7 +6,7 @@
   "author": "W. Augusto Andreoli <andreoliwa@gmail.com>",
   "dependencies": {
     "@material-ui/core": "^4.4.0",
-    "@mui/icons-material": "^5.0.0",
+    "@material-ui/icons": "^4.2.1",
     "@material-ui/styles": "^4.3.3",
     "antd": "^3.22.2",
     "gatsby": "^2.19.22",
