@@ -30,7 +30,7 @@ repos:
           - "@babel/core"
           - "@material-ui/core"
   - repo: https://github.com/openstack/bashate
-    rev: 2.1.0
+    rev: 2.1.1
     hooks:
       - id: bashate
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
