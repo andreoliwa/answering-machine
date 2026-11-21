@@ -5,7 +5,7 @@
   "version": "0.2.0",
   "author": "W. Augusto Andreoli <andreoliwa@gmail.com>",
   "dependencies": {
-    "@material-ui/core": "^4.4.0",
+    "@mui/material": "^5.0.0",
     "@material-ui/icons": "^4.2.1",
     "@material-ui/styles": "^4.3.3",
     "antd": "^3.22.2",
